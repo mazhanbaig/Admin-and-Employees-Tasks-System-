@@ -1,6 +1,13 @@
 import React from "react";
 
 const Navbar = () => {
+    const handleLogout = () => {
+    // Clear login state
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("loggedInEmail"); // optional if you saved email
+    // Redirect to login page
+    window.location.href = "/login";
+  };
     return (
         <nav className="bg-white shadow-md px-6 py-2 flex justify-between items-center">
             {/* Logo / Title */}
@@ -11,9 +18,7 @@ const Navbar = () => {
             {/* Right Side Links */}
             <div className="flex justify-end space-x-6 p-2">
                 <button
-                    onClick={() => {
-                        window.location.href = "/login";
-                    }}
+                    onClick={handleLogout}
                     className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition"
                 >
                     Logout

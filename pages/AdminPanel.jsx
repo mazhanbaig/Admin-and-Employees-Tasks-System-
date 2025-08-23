@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "./Navbar";
-import TaskForm from "./TaskForm";
-import { getTasksFromStorage, setTaskToStorage, setDataToStorage } from "./localStorage";
+import Navbar from "../src/components/Navbar";
+import TaskForm from "../src/components/TaskForm";
+import { getTasksFromStorage, setTaskToStorage, setDataToStorage } from "../src/components/localStorage";
 
 const AdminPanel = () => {
   const [tasks, setTasks] = useState([]);
