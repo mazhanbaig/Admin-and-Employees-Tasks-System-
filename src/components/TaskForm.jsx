@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getDataFromStorage } from "./localStorage"; // import your storage function
 
 const TaskForm = ({ onAddTask }) => {
   const [task, setTask] = useState({
@@ -9,6 +10,15 @@ const TaskForm = ({ onAddTask }) => {
     dueDate: "",
     assignedDate: new Date().toISOString().split("T")[0],
   });
+
+  const [employees, setEmployees] = useState([]); // store employee users
+
+  // Load employees from localStorage
+  useEffect(() => {
+    const users = getDataFromStorage(); // all users
+    const employeeUsers = users.filter((user) => user.role === "employee");
+    setEmployees(employeeUsers);
+  }, []);
 
   const handleChange = (e) => {
     setTask({ ...task, [e.target.name]: e.target.value });
@@ -35,24 +45,29 @@ const TaskForm = ({ onAddTask }) => {
 
       <form
         onSubmit={handleSubmit}
-        className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start "
+        className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start"
       >
-        {/* Left Column - Inputs */}
-        <div className="space-y-2">
-          {/* Employee Name */}
+        {/* Left Column */}
+        <div className="space-y-4">
+          {/* Employee Name Select */}
           <div className="flex flex-col">
             <label className="text-sm font-medium text-gray-600 mb-2">
               Employee Name
             </label>
-            <input
-              type="text"
+            <select
               name="employeeName"
               value={task.employeeName}
               onChange={handleChange}
-              placeholder="Enter employee name"
               required
               className="px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition"
-            />
+            >
+              <option value="">Select Employee</option>
+              {employees.map((emp) => (
+                <option key={emp.id} value={emp.name}>
+                  {emp.name} ({emp.email})
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Task Title */}
@@ -116,13 +131,12 @@ const TaskForm = ({ onAddTask }) => {
             placeholder="Enter task details"
             className="px-4 py-3 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition resize-none h-26 md:h-48"
           />
-
         </div>
 
-        {/* Submit Button spans both columns */}
+        {/* Submit Button */}
         <button
           type="submit"
-          className="md:col-span-2 w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-semibold shadow-lg text-lg transition"
+          className="md:col-span-2 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 md:py-4 rounded-2xl font-semibold shadow-lg text-lg transition"
         >
           Assign Task
         </button>
