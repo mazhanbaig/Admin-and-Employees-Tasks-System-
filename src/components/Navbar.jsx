@@ -9,7 +9,7 @@ const Navbar = () => {
     return (
         <nav className="bg-white shadow-md px-6 py-2 flex justify-between items-center">
             {/* Logo / Title */}
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-emerald-800 tracking-wide">
+            <h2 className="text-2xl sm:text-2xl md:text-3xl font-bold text-emerald-800 tracking-wide">
                 {user.role === "admin" ? (
                     "Admin Panel"
                 ) : (

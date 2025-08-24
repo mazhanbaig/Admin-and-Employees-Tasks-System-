@@ -14,7 +14,7 @@ const ProfileCard = () => {
     // const failedCount = userTasks.filter((t) => t.status === "Failed").length;
 
     return (
-        <div className="relative bg-gradient-to-r from-purple-500 to-indigo-600 text-white p-6 rounded-xl shadow-2xl flex flex-col md:flex-row items-center gap-6 hover:scale-101 transform transition-transform duration-300">
+        <div className="relative bg-gradient-to-r from-purple-500 to-indigo-600 text-white p-4 rounded-xl shadow-2xl flex flex-col md:flex-row items-center gap-6 hover:scale-101 transform transition-transform duration-300">
 
             {/* Avatar */}
             <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center text-3xl font-bold text-indigo-600 shadow-lg">
