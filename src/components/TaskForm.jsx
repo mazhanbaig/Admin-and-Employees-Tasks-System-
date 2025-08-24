@@ -1,7 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { getDataFromStorage } from "./localStorage"; // import your storage function
+import React, { useState, useEffect, useContext } from "react";
+import { getDataFromStorage } from "./localStorage";
+// import { TaskProvider } from "../context/TaskContext";
+import { TaskContext, TaskProvider } from "../context/TaskContext";
 
-const TaskForm = ({ onAddTask }) => {
+
+const TaskForm = () => {
+  const { addTask } = useContext(TaskContext);
+
   const [task, setTask] = useState({
     employeeName: "",
     title: "",
@@ -11,11 +16,10 @@ const TaskForm = ({ onAddTask }) => {
     assignedDate: new Date().toISOString().split("T")[0],
   });
 
-  const [employees, setEmployees] = useState([]); // store employee users
+  const [employees, setEmployees] = useState([]);
 
-  // Load employees from localStorage
   useEffect(() => {
-    const users = getDataFromStorage(); // all users
+    const users = getDataFromStorage();
     const employeeUsers = users.filter((user) => user.role === "employee");
     setEmployees(employeeUsers);
   }, []);
@@ -26,7 +30,7 @@ const TaskForm = ({ onAddTask }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAddTask(task);
+    addTask(task);
     setTask({
       employeeName: "",
       title: "",

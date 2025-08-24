@@ -1,35 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import Navbar from "../src/components/Navbar";
 import TaskForm from "../src/components/TaskForm";
-import { getTasksFromStorage, setTaskToStorage, setDataToStorage } from "../src/components/localStorage";
+import { TaskContext, TaskProvider } from "../src/context/TaskContext";
 
 const AdminPanel = () => {
-  const [tasks, setTasks] = useState([]);
-  const [expanded, setExpanded] = useState({}); // track expanded tasks
-
-  useEffect(() => {
-    let storedTasks = getTasksFromStorage();
-    if (storedTasks.length === 0) {
-      setDataToStorage();
-      storedTasks = getTasksFromStorage();
-    }
-    setTasks(storedTasks);
-  }, []);
-
-  const addTask = (newTask) => {
-    setTasks([...tasks, newTask]);
-    setTaskToStorage(newTask);
-  };
-
-  const deleteTask = (index) => {
-    const updatedTasks = tasks.filter((_, idx) => idx !== index);
-    setTasks(updatedTasks);
-    localStorage.setItem("Tasks", JSON.stringify(updatedTasks));
-  };
-
-  const toggleExpand = (index) => {
-    setExpanded({ ...expanded, [index]: !expanded[index] });
-  };
+  const { tasks, addTask, deleteTask, expanded, toggleExpand } = useContext(TaskContext);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -44,15 +19,15 @@ const AdminPanel = () => {
             <p className="text-gray-500">No tasks assigned yet.</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {tasks.map((task, idx) => {
-                const isLong = task.description.length > 30; // threshold for long description
-                const displayText = expanded[idx] || !isLong
+              {tasks.map((task) => {
+                const isLong = task.description.length > 30;
+                const displayText = expanded[task.id] || !isLong
                   ? task.description
                   : task.description.substring(0, 30) + "...";
 
                 return (
                   <div
-                    key={idx}
+                    key={task.id}
                     className="group bg-gradient-to-r from-blue-50 to-white p-5 rounded-2xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 relative"
                   >
                     <div className="flex justify-between items-start mb-3">
@@ -75,10 +50,10 @@ const AdminPanel = () => {
                       {displayText}
                       {isLong && (
                         <button
-                          onClick={() => toggleExpand(idx)}
+                          onClick={() => toggleExpand(task.id)}
                           className="text-blue-500 ml-1 text-xs font-semibold"
                         >
-                          {expanded[idx] ? "Read Less" : "Read More"}
+                          {expanded[task.id] ? "Read Less" : "Read More"}
                         </button>
                       )}
                     </p>
@@ -89,8 +64,8 @@ const AdminPanel = () => {
                     </div>
 
                     <button
-                      onClick={() => deleteTask(idx)}
-                      className="hidden group-hover:inline-block w-full relative bottom-[-4px] bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1 rounded-full shadow transition"
+                      onClick={() => deleteTask(task.id)}
+                      className="group-hover:inline-block relative bottom-[-4px] bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1 rounded-full shadow transition"
                     >
                       Delete
                     </button>
