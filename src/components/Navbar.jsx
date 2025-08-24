@@ -9,9 +9,14 @@ const Navbar = () => {
     return (
         <nav className="bg-white shadow-md px-6 py-2 flex justify-between items-center">
             {/* Logo / Title */}
-            <h2 className="text-3xl font-bold text-gray-800 tracking-wide">
-                {user.role == "admin" ? "Admin Panel" : "Employee DashBoard" }
-                
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-emerald-800 tracking-wide">
+                {user.role === "admin" ? (
+                    "Admin Panel"
+                ) : (
+                    <>
+                        Hey <br /> {user.name}
+                    </>
+                )}
             </h2>
 
             {/* Right Side Links */}

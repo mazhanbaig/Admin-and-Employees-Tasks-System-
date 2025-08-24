@@ -21,13 +21,6 @@ const App = () => {
     localStorage.setItem("loggedInEmail", loggedInUser.email);
   };
 
-  // Logout function
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem("loggedInUser");
-    localStorage.removeItem("loggedInEmail");
-  };
-
   // Routing by role
   if (!user) return <Login onLogin={handleLogin} />;
 

@@ -16,7 +16,7 @@ const AdminPanel = () => {
 
         {/* Assigned Tasks */}
         <div className="mt-8">
-          <h3 className="text-2xl font-bold text-gray-800 mb-6">
+          <h3 className="text-2xl font-bold text-emerald-800 mb-6">
             Assigned Tasks
           </h3>
 

@@ -30,6 +30,14 @@ export const TaskProvider = ({ children }) => {
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
   };
 
+  const updateTaskStatus = (id, status) => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === id ? { ...task, status } : task
+    );
+    setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+  };
+
   const toggleExpand = (id) => {
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
   };
@@ -49,6 +57,7 @@ export const TaskProvider = ({ children }) => {
         tasks,
         addTask,
         deleteTask,
+        updateTaskStatus,
         expanded,
         toggleExpand,
         logout,

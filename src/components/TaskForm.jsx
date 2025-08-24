@@ -14,6 +14,7 @@ const TaskForm = () => {
     priority: "Low",
     dueDate: "",
     assignedDate: new Date().toISOString().split("T")[0],
+    status: "Pending",
   });
 
   const [employees, setEmployees] = useState([]);
@@ -38,12 +39,14 @@ const TaskForm = () => {
       priority: "Low",
       dueDate: "",
       assignedDate: new Date().toISOString().split("T")[0],
+      status: "Pending",
     });
+
   };
 
   return (
     <div className="w-full mx-auto p-6 md:p-8 bg-white rounded-2xl shadow-xl">
-      <h2 className="text-3xl font-bold text-gray-800 text-center mb-8">
+      <h2 className="text-3xl font-bold text-emerald-800 text-center mb-8">
         Assign New Task
       </h2>
 
@@ -125,7 +128,7 @@ const TaskForm = () => {
 
         {/* Right Column - Description */}
         <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-600 mb-2">
+          <label className="text-md font-medium text-gray-600 mb-2">
             Description
           </label>
           <textarea
@@ -140,7 +143,7 @@ const TaskForm = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="md:col-span-2 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 md:py-4 rounded-2xl font-semibold shadow-lg text-lg transition"
+          className="md:col-span-2 w-full bg-emerald-800 hover:bg-blue-700 text-white py-2 md:py-4 rounded-2xl font-semibold shadow-lg text-lg transition"
         >
           Assign Task
         </button>

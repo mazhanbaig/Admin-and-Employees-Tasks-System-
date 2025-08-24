@@ -43,7 +43,7 @@ const Login = ({ onLogin }) => {
       {/* Right form */}
       <div className="flex flex-1 items-center justify-center p-8 bg-gray-100">
         <div className="bg-white shadow-2xl rounded-xl w-full max-w-md p-8 z-10">
-          <h2 className="text-2xl font-bold text-gray-800 text-center mb-2">
+          <h2 className="text-3xl font-bold text-emerald-800 text-center mb-2">
             Login
           </h2>
           <p className="text-center text-gray-500 text-sm mb-6">
