@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getDataFromStorage, setDataToStorage } from "../src/components/localStorage";
+import { getDataFromStorage, setDataToStorage } from "../components/localStorage";
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("");
@@ -14,13 +14,16 @@ const Login = ({ onLogin }) => {
   const handleLogin = (e) => {
     e.preventDefault();
     const users = getDataFromStorage();
+
     const foundUser = users.find(
-      (user) => user.email === email.trim() && user.password === password.trim()
+      (user) =>
+        user.email === email.trim() &&
+        user.password === password.trim()
     );
 
     if (foundUser) {
       alert(`✅ Welcome ${foundUser.name} (Role: ${foundUser.role})`);
-      onLogin(foundUser);
+      onLogin(foundUser); // send user info to App.jsx
     } else {
       alert("❌ Invalid email or password");
     }
@@ -41,7 +44,7 @@ const Login = ({ onLogin }) => {
       <div className="flex flex-1 items-center justify-center p-8 bg-gray-100">
         <div className="bg-white shadow-2xl rounded-xl w-full max-w-md p-8 z-10">
           <h2 className="text-2xl font-bold text-gray-800 text-center mb-2">
-            Admin Login
+            Login
           </h2>
           <p className="text-center text-gray-500 text-sm mb-6">
             Enter your email and password to continue
@@ -53,6 +56,7 @@ const Login = ({ onLogin }) => {
               <input
                 type="email"
                 placeholder="Enter your email"
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
@@ -63,6 +67,7 @@ const Login = ({ onLogin }) => {
               <input
                 type="password"
                 placeholder="Enter your password"
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />

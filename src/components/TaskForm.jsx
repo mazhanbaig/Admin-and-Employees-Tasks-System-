@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { getDataFromStorage } from "./localStorage";
+import { getDataFromStorage } from "../components/localStorage";
 // import { TaskProvider } from "../context/TaskContext";
 import { TaskContext, TaskProvider } from "../context/TaskContext";
 
@@ -133,7 +133,7 @@ const TaskForm = () => {
             value={task.description}
             onChange={handleChange}
             placeholder="Enter task details"
-            className="px-4 py-3 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition resize-none h-26 md:h-48"
+            className="px-4 py-3 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition resize-none h-30 md:h-48"
           />
         </div>
 

@@ -1,42 +1,40 @@
 import React, { useState, useEffect } from "react";
-import AdminPanel from "../pages/AdminPanel";
-import Login from "../pages/Login";
-import { getDataFromStorage } from "../src/components/localStorage";
+import Login from "./pages/Login.jsx";
+import AdminPanel from "./pages/AdminPanel.jsx";
+import EmployeePanel from "./pages/EmployeePanel.jsx";
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [user, setUser] = useState(null);
 
+  // Load user from localStorage when app starts (auto-login after refresh)
   useEffect(() => {
-    // Check login state on page load
-    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
-    const email = localStorage.getItem("currentUserEmail");
-
-    if (loggedIn && email) {
-      const user = getDataFromStorage().find(u => u.email === email);
-      if (user && user.role === "admin") {
-        setCurrentUser(user);
-      }
+    const storedUser = localStorage.getItem("loggedInUser");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
-
-    setIsLoggedIn(loggedIn);
   }, []);
 
-  const handleLogin = (user) => {
-    // Only allow admin login
-    if (user.role !== "admin") {
-      alert("❌ Only admin can log in here");
-      return;
-    }
-    localStorage.setItem("isLoggedIn", "true");
-    localStorage.setItem("currentUserEmail", user.email);
-    setCurrentUser(user);
-    setIsLoggedIn(true);
+  // Save user to localStorage on login
+  const handleLogin = (loggedInUser) => {
+    setUser(loggedInUser);
+    localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+    localStorage.setItem("loggedInEmail", loggedInUser.email);
   };
 
-  if (!isLoggedIn || !currentUser) return <Login onLogin={handleLogin} />;
+  // Logout function
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("loggedInEmail");
+  };
 
-  return <AdminPanel />;
+  // Routing by role
+  if (!user) return <Login onLogin={handleLogin} />;
+
+  if (user.role === "admin") return <AdminPanel />;
+  if (user.role === "employee") return <EmployeePanel  />;
+
+  return <p>❌ Unknown role</p>;
 };
 
 export default App;

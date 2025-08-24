@@ -1,43 +1,58 @@
 import React, { createContext, useState, useEffect } from "react";
-import { getTasksFromStorage, setTaskToStorage } from "../components/localStorage";
+import { getTasksFromStorage } from "../components/localStorage";
 
-// 1. Create the context
+// Create Context
 export const TaskContext = createContext();
 
-// 2. Create the provider component
+// Provider Component
 export const TaskProvider = ({ children }) => {
+  // ------------------ State ------------------
   const [tasks, setTasks] = useState([]);
+  const [expanded, setExpanded] = useState({});
 
-  // Load tasks from localStorage when app starts
+  // ------------------ Effects ------------------
   useEffect(() => {
     const storedTasks = getTasksFromStorage();
-    setTasks(storedTasks);
+    if (storedTasks) setTasks(storedTasks);
   }, []);
 
-  // Add a new task
-  const addTask = (newTask) => {
-    const taskWithId = { ...newTask, id: Date.now() }; // unique id
+  // ------------------ Task Functions ------------------
+  const addTask = (task) => {
+    const taskWithId = { ...task, id: Date.now() };
     const updatedTasks = [...tasks, taskWithId];
     setTasks(updatedTasks);
-    setTaskToStorage(taskWithId);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks)); // ✅ keep lowercase "tasks"
   };
 
-  // Delete a task
   const deleteTask = (id) => {
     const updatedTasks = tasks.filter((task) => task.id !== id);
     setTasks(updatedTasks);
-    localStorage.setItem("Tasks", JSON.stringify(updatedTasks));
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
   };
 
-  // Toggle expanded for a task (can be stored locally in component too)
-  const [expanded, setExpanded] = useState({});
   const toggleExpand = (id) => {
-    setExpanded({ ...expanded, [id]: !expanded[id] });
+    setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
+  // ------------------ Auth Functions ------------------
+  const logout = () => {
+    // localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("loggedInEmail");
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "/Login"; // Redirect
+  };
+
+  // ------------------ Provider ------------------
   return (
     <TaskContext.Provider
-      value={{ tasks, addTask, deleteTask, expanded, toggleExpand }}
+      value={{
+        tasks,
+        addTask,
+        deleteTask,
+        expanded,
+        toggleExpand,
+        logout,
+      }}
     >
       {children}
     </TaskContext.Provider>

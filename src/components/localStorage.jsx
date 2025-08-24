@@ -23,14 +23,14 @@ export const setDataToStorage = () => {
   localStorage.setItem("usersData", JSON.stringify(users));
 };
 
-// ✅ Get tasks
+// Get all tasks
 export const getTasksFromStorage = () => {
-  return JSON.parse(localStorage.getItem("Tasks") || "[]");
+  return JSON.parse(localStorage.getItem("tasks") || "[]"); // small t
 };
 
-// ✅ Add new task (link to employee)
+// Save a new task
 export const setTaskToStorage = (newTask) => {
-  const tasks = JSON.parse(localStorage.getItem("Tasks") || "[]");
+  const tasks = JSON.parse(localStorage.getItem("tasks") || "[]"); // small t
   tasks.push(newTask);
-  localStorage.setItem("Tasks", JSON.stringify(tasks));
+  localStorage.setItem("tasks", JSON.stringify(tasks)); // small t
 };
