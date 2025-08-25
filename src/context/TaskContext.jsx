@@ -1,11 +1,14 @@
 import React, { createContext, useState, useEffect } from "react";
 import { getTasksFromStorage } from "../components/localStorage";
+import { useNavigate } from "react-router-dom";
+
 
 // Create Context
 export const TaskContext = createContext();
 
 // Provider Component
 export const TaskProvider = ({ children }) => {
+  const navigate = useNavigate();
   // ------------------ State ------------------
   const [tasks, setTasks] = useState([]);
   const [expanded, setExpanded] = useState({});
@@ -47,7 +50,7 @@ export const TaskProvider = ({ children }) => {
     // localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("loggedInEmail");
     localStorage.removeItem("loggedInUser");
-    window.location.href = "/Login"; // Redirect
+    navigate("/login"); // Redirect
   };
 
   // ------------------ Provider ------------------
