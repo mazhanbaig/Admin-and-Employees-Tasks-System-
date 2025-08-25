@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Login from "./pages/Login.jsx";
 import AdminPanel from "./pages/AdminPanel.jsx";
 import EmployeePanel from "./pages/EmployeePanel.jsx";
+import { Route, Routes, Navigate } from "react-router-dom";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -21,13 +22,30 @@ const App = () => {
     localStorage.setItem("loggedInEmail", loggedInUser.email);
   };
 
-  // Routing by role
-  if (!user) return <Login onLogin={handleLogin} />;
+  return (
+    <Routes>
+      {/* If user not logged in → show login */}
+      {!user && <Route path="/login" element={<Login />} />}
 
-  if (user.role === "admin") return <AdminPanel />;
-  if (user.role === "employee") return <EmployeePanel  />;
+      {/* Admin route */}
+      {user?.role === "admin" && (
+        <Route path="/admin" element={<AdminPanel />} />
+      )}
 
-  return <p>❌ Unknown role</p>;
+      {/* Employee route */}
+      {user?.role === "employee" && (
+        <Route path="/employee" element={<EmployeePanel />} />
+      )}
+
+      {/* Default redirects after login */}
+      {user?.role === "admin" && (
+        <Route path="*" element={<Navigate to="/admin" replace />} />
+      )}
+      {user?.role === "employee" && (
+        <Route path="*" element={<Navigate to="/employee" replace />} />
+      )}
+    </Routes>
+  );
 };
 
 export default App;
