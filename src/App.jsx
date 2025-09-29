@@ -53,63 +53,48 @@
 
 
 
-
-
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 
 import Login from "./pages/Login.jsx";
 import AdminPanel from "./pages/AdminPanel.jsx";
 import EmployeePanel from "./pages/EmployeePanel.jsx";
+import { TaskProvider } from "./context/TaskContext.jsx";
 
 const App = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  // Load user from localStorage when app starts (auto-login after refresh)
+  // Load user from localStorage when app starts
   useEffect(() => {
     const storedUser = localStorage.getItem("loggedInUser");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      const parsedUser = JSON.parse(storedUser); // ✅ parse first
+      setUser(parsedUser);
+      if (parsedUser.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/employee");
+      }
     }
-  }, []);
+  }, [navigate]);
 
-  // Save user to localStorage on login + redirect
+
+  // Handle login
   const handleLogin = (loggedInUser) => {
     setUser(loggedInUser);
     localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
     localStorage.setItem("loggedInEmail", loggedInUser.email);
 
-    // redirect based on role
     if (loggedInUser.role === "admin") {
       navigate("/admin");
-    } else if (loggedInUser.role === "employee") {
+    } else {
       navigate("/employee");
     }
   };
 
   return (
     <Routes>
-      {/* Login page */}
-      <Route path="/login" element={<Login onLogin={handleLogin} />} />
-
-      {/* Admin page (protected) */}
-      <Route
-        path="/admin"
-        element={
-          user?.role === "admin" ? <AdminPanel /> : <Navigate to="/login" />
-        }
-      />
-
-      {/* Employee page (protected) */}
-      <Route
-        path="/employee"
-        element={
-          user?.role === "employee" ? <EmployeePanel /> : <Navigate to="/login" />
-        }
-      />
-
-      {/* Default route "/" → redirect based on login */}
       <Route
         path="/"
         element={
@@ -123,7 +108,35 @@ const App = () => {
         }
       />
 
-      {/* Catch-all (404) */}
+      <Route path="/login" element={<Login onLogin={handleLogin} />} />
+
+      <Route
+        path="/admin"
+        element={
+          user?.role === "admin" ? <AdminPanel /> : <Navigate to="/login" />
+        }
+      />
+
+      <Route
+        path="/employee"
+        element={
+          user?.role === "employee" ? <EmployeePanel /> : <Navigate to="/login" />
+        }
+      />
+
+      <Route
+        path="/"
+        element={
+          !user ? (
+            <Navigate to="/login" />
+          ) : user.role === "admin" ? (
+            <Navigate to="/admin" />
+          ) : (
+            <Navigate to="/employee" />
+          )
+        }
+      />
+
       <Route path="*" element={<p>❌ Page not found</p>} />
     </Routes>
   );

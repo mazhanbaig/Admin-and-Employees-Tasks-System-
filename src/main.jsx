@@ -7,10 +7,10 @@ import { TaskProvider } from "../src/context/TaskContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   // <StrictMode>
-    <BrowserRouter>       {/* ✅ Wrap the whole app */}
-  <TaskProvider>
+  <BrowserRouter>       {/* ✅ Wrap the whole app */}
+    <TaskProvider>
       <App />
-  </TaskProvider>
-    </BrowserRouter>
+    </TaskProvider>
+  </BrowserRouter>
   // </StrictMode>
 );

@@ -1,4 +1,4 @@
-// Users
+// Employees
 const employees = [
   { id: 101, name: "Alice Johnson", email: "alice@a.com", password: "a", role: "employee" },
   { id: 102, name: "Bob Smith", email: "bob@example.com", password: "bob123", role: "employee" },
@@ -10,27 +10,15 @@ const employees = [
 // Admin
 const admin = { id: 1, name: "John Admin", email: "a@a.com", password: "a", role: "admin" };
 
-// Merge all users
+// All users
 const users = [admin, ...employees];
 
-// ✅ Get users
+// Get users from storage
 export const getDataFromStorage = () => {
   return JSON.parse(localStorage.getItem("usersData") || "[]");
 };
 
-// ✅ Save users
+// Save users (only once at start)
 export const setDataToStorage = () => {
   localStorage.setItem("usersData", JSON.stringify(users));
-};
-
-// Get all tasks
-export const getTasksFromStorage = () => {
-  return JSON.parse(localStorage.getItem("tasks") || "[]"); // small t
-};
-
-// Save a new task
-export const setTaskToStorage = (newTask) => {
-  const tasks = JSON.parse(localStorage.getItem("tasks") || "[]"); // small t
-  tasks.push(newTask);
-  localStorage.setItem("tasks", JSON.stringify(tasks)); // small t
 };
